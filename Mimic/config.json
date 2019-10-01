@@ -1,0 +1,30 @@
+{
+	"server_set": {
+		"address": 1,
+		"write_start": 0,
+		"data_type": "float32",
+		"register_type": "HOLDING_REGISTERS",
+		"gen_period": [0, 0, 2],
+		"gen_end": [0, 0, 40]
+	},
+
+	"generation_set": [
+		{
+			"patterns_followed": 5,
+
+			"harm_use": [0, 2],
+			"harm_count": [2, 11],
+			"harm_amplitude": [0.0, 10.0],
+			"harm_period_sec": [10.0, 250.0],
+			"harm_phase": [0.0, 100.0],
+
+			"randWalk_use": [0, 2],
+			"randWalk_start": [0.0, 2.0],
+			"randWalk_factor": [0.0, 2.0],
+
+			"trend_use": [0, 2],
+			"trend_slope": [0.1, 1.0],
+			"trend_zero": [0.0, 2.0]
+		}
+	]
+}
