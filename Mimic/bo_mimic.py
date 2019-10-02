@@ -38,13 +38,27 @@ class Mimic:
     Эмулирует работу прибора по протоколу modbus
     """
 
-    def __init__(self, configPath='config.json', logPath='log.txt'):
+    def __init__(self, config='config.json', logPath='log.txt'):
         """
-        Инициализирует начальные значения
+        Конфиг:
+         * Если указан путь (str), читает файл и заменяет прочитанное.
+           Если путь не существует или не удалось прочитать,
+           использует настройки по умолчанию
 
-        :param str configPath: Путь к файлу конфигурации
+         * Если указан словарь настроек (dict), заменяет указанное
+
+         * Иначе, использует настройки по умолчанию
+
+        Лог:
+         * Если указан путь (str), дублирует консольный вывод в файл
+           Не дублирует серверный вывод (например: подключение, отключение, ошибки мастера...)
+
+         * Иначе вывод только в консоль
+
+        :param config: Путь к файлу конфигурации или словарь с настройками
+        :type config: dict, str
         :param str logPath: Путь к логу
-        :param bool logRec: Дублировать запись в лог
+
         """
 
         # handle консоли
@@ -55,8 +69,8 @@ class Mimic:
 
         # коды ошибок
         self.ERROR = {
-            'NO_CONFIG': 'Ошибка при чтении файла конфигурации!',
-            'NO_PATH': 'Путь не найден -',
+            'NO_CONFIG': 'Ошибка при чтении файла конфигурации!\n'
+                         '\t Будут использованы параметры по умолчанию!',
             'READ_FAIL': 'Не удалось прочитать файл -',
             # генерация параметров
             'RAND_FAIL': 'Не удалось сгенерировать параметры модели!\n'
@@ -100,14 +114,14 @@ class Mimic:
         }
 
         # лог сервера
-        format = "### [%(asctime)s]: %(message)s\n"
-        self.logger = modbus_tk.utils.create_logger(name="console", record_format=format)
+        messFormat = "### [%(asctime)s]: %(message)s\n"
+        self.logger = modbus_tk.utils.create_logger(name="console", record_format=messFormat)
 
         # информация о сборке
         self._info_base()
 
         # конфиг
-        self.serverSet, self.genSet = self._create_config(configPath)
+        self.serverSet, self.genSet = self._create_config(config)
         self._gen_params()
 
     ## Запуск сервера
@@ -163,7 +177,9 @@ class Mimic:
                 convVal.extend(self._float_converter(val))
             slave.set_values('0', 0, convVal)
 
-            mess = f'Запись № {i}\n\t [{len(orgVal)}]: {orgVal}'
+            mess = f'Запись № {i}\n' \
+                   f'\t - Оригинальные данные [{len(orgVal)}]: {orgVal}\n' \
+                   f'\t - Записанные в регистры [{len(convVal)}]: {convVal}'
             self._trace(mess, 11, 'REC')
 
             timeNow = datetime.now()
@@ -178,40 +194,41 @@ class Mimic:
             t.sleep(period)  # пауза на 5 секунд
 
     ## Создание конфига
-    def _create_config(self, configPath=''):
+    def _create_config(self, config=''):
         """
-        Генерирует базовые настройки.
-        Читает файл конфигурации и дополняет настройки.
+        Генерирует настройки сервера и генерации.
 
-        Если путь не задан, будет сформирован конфиг по умолчанию
-
-        :param configPath: Путь к файлу конфигурации
+        :param config: Путь к файлу конфигурации или словарь с настройками
+        :type config: dict, str
         """
 
         ## Чтение и замещение параметров из файла
-        def read_config():
+        def read_set():
             self._trace('Чтение файла конфигурации', 6, 'READ')
 
             try:
-                with open(configPath, "r") as read_file:
+                with open(config, "r") as read_file:
                     data = json.load(read_file)
-            except FileNotFoundError:
-                self._trace(f'{self.ERROR["NO_PATH"]} {configPath}', 14, 'WARN')
-                data = {}
             except Exception as err:
-                errMess = f'{self.ERROR["READ_FAIL"]} {configPath}\n\tТекст ошибки - {err}'
+                errMess = f'{self.ERROR["READ_FAIL"]} {config}\n' \
+                          f'\t Текст ошибки - {err}\n' \
+                          f'\t Будут использованы настройки по умолчанию'
                 self._trace(errMess, 14, 'WARN')
-                data = {}
+                return {}
 
             # проверка корректности файла конфигурации
             if not data:
-                self._trace(f'{self.ERROR["NO_CONFIG"]}', 12, 'ERROR')
-                sys.exit()
+                self._trace(f'{self.ERROR["NO_CONFIG"]}', 14, 'ERROR')
 
+            return data
+
+        ## Финализация настроек
+        def finalization_set(data):
             # замещение параметров сервера на прочитаные значения
+            sSet = deepcopy(serverSet)
             for item in data['server_set'].items():
                 if item[0] in serverSet:
-                    serverSet[item[0]] = item[1]
+                    sSet[item[0]] = item[1]
 
             # клонирование шаблонов
             if data.get('generation_set'):
@@ -222,7 +239,8 @@ class Mimic:
             for pat in patterns:
                 [newGenSet.append(deepcopy(pat))
                  for _ in range(pat['patterns_followed'])]
-            return newGenSet
+
+            return sSet, newGenSet
 
         # настройки сервера
         serverSet = {
@@ -254,15 +272,17 @@ class Mimic:
             }
         ]
 
-        # чтение параметров из файла, если задано,
-        if configPath:
-            generationSet = read_config()
-        else:
-            genSet = []
-            for pattern in generationSet:
-                [genSet.append(deepcopy(pattern))
-                 for _ in range(pattern['patterns_followed'])]
-            generationSet = genSet
+        newSet = False
+        # чтение параметров из файла
+        if isinstance(config, str):
+            newSet = read_set()
+        # получение параметров из кода
+        if isinstance(config, dict):
+            newSet = config
+        # использование по умолчанию
+        if not newSet:
+            newSet = {'server_set': serverSet, 'generation_set': generationSet}
+        serverSet, generationSet = finalization_set(newSet)
 
         return serverSet, generationSet
 
@@ -389,7 +409,7 @@ class Mimic:
         self._trace(mess, 2, 'INFO')
 
     ## Вывод сообщения
-    def _trace(self, text, color=13, typeMess='oper', logRecord=True):
+    def _trace(self, text, color=13, typeMess='INFO', logRecord=True):
         """
         Трасировка сообщений в консоль и дублирование в лог
 
@@ -526,7 +546,50 @@ class Mimic:
 
 
 if __name__ == "__main__":
-    mimic = Mimic(configPath='config.json', logPath='log.txt')
-    mimic.run()
+    # пример настроек
+    testConfig = {
+        # Настройки сервера
+        "server_set": {
+            "address": 1,                           # адрес устройства
+            "write_start": 0,                       # начальный регистр
+            "data_type": "float32",                 # тип записываемых данных
+            "register_type": "HOLDING_REGISTERS",   # тип регистра (блока)
+            "gen_period": [0, 0, 20],               # период генерации (интервал между записями)
+            "gen_end": [666, 0, 0]                  # время работы сервера
+            # время задаётся: [часов, минут, секунд]
+        },
+        # Настройки генерации
+        "generation_set": [
+            # шаблон настроек сигнала
+            {
+                "patterns_followed": 1,            # число сигналов по шаблону
+                # Настройки гармоник
+                "harm_use": [0, 2],                 # добавлять к сигналу гармоники
+                "harm_count": [2, 11],              # число гармоник
+                "harm_amplitude": [0.0, 10.0],      #
+                "harm_period_sec": [10.0, 250.0],   #
+                "harm_phase": [0.0, 100.0],         #
+                # Настройки случайной части
+                "randWalk_use": [0, 2],             # добавлять к сигналу случайную часть
+                "randWalk_start": [0.0, 2.0],       # начальный шаг
+                "randWalk_factor": [0.0, 2.0],      # коэффициент шага
+                # Настройки тренда
+                "trend_use": [0, 2],                # добавлять к сигналу тренд
+                "trend_slope": [0.1, 1.0],          #
+                "trend_zero": [0.0, 2.0]            #
+            }
+        ]
+    }
 
+    # Использование настроек по умолчанию
+    # mimic = Mimic()
+
+    # Использование настроек из кода
+    # mimic = Mimic(config=testConfig, logPath='log.txt')
+
+    # Использование настроек из файла
+    mimic = Mimic(config='config.json', logPath='log.txt')
+
+    # Запуск
+    mimic.run()
     os.system("pause")
