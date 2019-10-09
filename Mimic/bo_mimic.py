@@ -25,7 +25,6 @@ from ctypes import *
 # Модули для работы с данными
 import json
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Протокол Modbus
 import modbus_tk
@@ -249,7 +248,7 @@ class Mimic:
             "data_type": "float32",
             "register_type": "HOLDING_REGISTERS",
             "gen_period": [0, 0, 20],
-            "gen_end": [666, 0, 0]
+            "gen_end": [0, 0, 40]
         }
         # настройки генерации
         generationSet = [
@@ -373,7 +372,7 @@ class Mimic:
 
     ## Вывод информации по серверу
     def _info_server(self):
-        ip = socket.gethostbyname(socket.getfqdn())
+        ip = socket.gethostbyname(socket.gethostname())
 
         mess = f'Сервер запущен...\n' \
                f'\t Информация о сервере:\n' \
@@ -546,6 +545,7 @@ class Mimic:
 
 
 if __name__ == "__main__":
+
     # пример настроек
     testConfig = {
         # Настройки сервера
