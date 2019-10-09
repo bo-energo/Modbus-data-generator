@@ -248,7 +248,7 @@ class Mimic:
             "data_type": "float32",
             "register_type": "HOLDING_REGISTERS",
             "gen_period": [0, 0, 20],
-            "gen_end": [0, 0, 40]
+            "gen_end": [48, 0, 0]
         }
         # настройки генерации
         generationSet = [
