@@ -585,10 +585,10 @@ if __name__ == "__main__":
     # mimic = Mimic()
 
     # Использование настроек из кода
-    # mimic = Mimic(config=testConfig, logPath='log.txt')
+    mimic = Mimic(config=testConfig, logPath='log.txt')
 
     # Использование настроек из файла
-    mimic = Mimic(config='config.json', logPath='log.txt')
+    #mimic = Mimic(config='config.json', logPath='log.txt')
 
     # Запуск
     mimic.run()
