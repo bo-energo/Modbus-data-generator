@@ -12,6 +12,15 @@ namespace BO_Math
     public abstract class Generator
     {
         /// <summary>
+        /// Возвращает параметры генератора
+        /// </summary>
+        /// <returns>Список параметров</returns>
+        public virtual string[] GetParams()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Генерация следующего значения
         /// </summary>
         /// <returns>Сгенерированное значение</returns>

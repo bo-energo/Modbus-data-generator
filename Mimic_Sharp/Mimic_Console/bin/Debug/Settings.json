@@ -2,30 +2,47 @@
 	"TcpSlave": {
 		"IP": "127.0.0.1",
 		"Port": 502,
-		"Address": 255,
+		"Address": 2,
 		"Gen_Period": [0, 0, 10],
 		"Gen_End": [2, 0, 40],
 		
-		"Generate_Set": [
+		"Signals_Set": [
 			{
 				"Name": "AT1_NKVV (0)",
 				"Address": 1,
 				"Data_Type": "Int16",
 				"Register_Type": "Holding",
-
-				"Sinewave_Use": 0,
-				"Sinewave_Count": [2, 11],
-				"Sinewave_Amplitude": [0.0, 10.0],
-				"Sinewave_Period": [10.0, 250.0],
-				"Sinewave_Phase": [0.0, 100.0],
-
-				"Randwalk_Use": 1,
-				"Randwalk_Start": [0.0, 2.0],
-				"Randwalk_Factor": [0.0, 12.0],
-
-				"Trend_Use": 0,
-				"Trend_Slope": [0.1, 1.0],
-				"Trend_Zero": [0.0, 2.0]
+				
+				"Components": [
+					{
+						"Name": "Sinewave",
+						"Params": {
+							"Use": 1,
+							"Count": [2, 11],
+							"Amplitude": [0.0, 10.0],
+							"Period": [10.0, 250.0],
+							"Phase": [0.0, 100.0]
+						}
+					},
+					{
+						"Name": "Randwalk",
+						"Params": {
+							"Use": 1,
+							"Count": 1,
+							"Start": [0.0, 2.0],
+							"Factor": [0.0, 20.0]
+						}
+					},
+					{
+						"Name": "Trend",
+						"Params": {
+							"Use": 1,
+							"Count": 1,
+							"Slope": [0.1, 1.0],
+							"Zero": [0.0, 2.0]
+						}
+					}
+				]
 			},
 			
 			{
@@ -34,9 +51,15 @@
 				"Data_Type": "Int16",
 				"Register_Type": "Holding",
 
-				"Randwalk_Use": 1,
-				"Randwalk_Start": [0.0, 2.0],
-				"Randwalk_Factor": [0.0, 5.0]
+				"Components": [
+					{
+						"Name": "Randwalk",
+						"Params": {
+							"Start": [0.0, 2.0],
+							"Factor": [0.0, 20.0]
+						}
+					}
+				]
 			},
 						
 			{
@@ -45,9 +68,15 @@
 				"Data_Type": "Int16",
 				"Register_Type": "Holding",
 
-				"Randwalk_Use": 1,
-				"Randwalk_Start": [0.0, 2.0],
-				"Randwalk_Factor": [0.0, 2.0]
+				"Components": [
+					{
+						"Name": "Randwalk",
+						"Params": {
+							"Start": [0.0, 2.0],
+							"Factor": [0.0, 20.0]
+						}
+					}
+				]
 			},
 						
 			{
@@ -56,9 +85,15 @@
 				"Data_Type": "Int16",
 				"Register_Type": "Holding",
 
-				"Randwalk_Use": 1,
-				"Randwalk_Start": [0.0, 2.0],
-				"Randwalk_Factor": [0.0, 20.0]
+				"Components": [
+					{
+						"Name": "Randwalk",
+						"Params": {
+							"Start": [0.0, 2.0],
+							"Factor": [0.0, 20.0]
+						}
+					}
+				]
 			},
 						
 			{
@@ -67,9 +102,15 @@
 				"Data_Type": "Int16",
 				"Register_Type": "Holding",
 
-				"Randwalk_Use": 1,
-				"Randwalk_Start": [0.0, 2.0],
-				"Randwalk_Factor": [5.0, 20.0]
+				"Components": [
+					{
+						"Name": "Randwalk",
+						"Params": {
+							"Start": [0.0, 2.0],
+							"Factor": [0.0, 20.0]
+						}
+					}
+				]
 			},
 						
 			{
@@ -78,9 +119,15 @@
 				"Data_Type": "Int16",
 				"Register_Type": "Holding",
 
-				"Randwalk_Use": 1,
-				"Randwalk_Start": [0.0, 2.0],
-				"Randwalk_Factor": [5.0, 20.0]
+				"Components": [
+					{
+						"Name": "Randwalk",
+						"Params": {
+							"Start": [0.0, 2.0],
+							"Factor": [0.0, 20.0]
+						}
+					}
+				]
 			},
 						
 			{
@@ -89,9 +136,15 @@
 				"Data_Type": "Int16",
 				"Register_Type": "Holding",
 
-				"Randwalk_Use": 1,
-				"Randwalk_Start": [0.0, 2.0],
-				"Randwalk_Factor": [5.0, 20.0]
+				"Components": [
+					{
+						"Name": "Randwalk",
+						"Params": {
+							"Start": [0.0, 2.0],
+							"Factor": [0.0, 20.0]
+						}
+					}
+				]
 			},
 						
 			{
@@ -100,9 +153,15 @@
 				"Data_Type": "Int16",
 				"Register_Type": "Holding",
 
-				"Randwalk_Use": 1,
-				"Randwalk_Start": [0.0, 2.0],
-				"Randwalk_Factor": [5.0, 20.0]
+				"Components": [
+					{
+						"Name": "Randwalk",
+						"Params": {
+							"Start": [0.0, 2.0],
+							"Factor": [0.0, 20.0]
+						}
+					}
+				]
 			},
 						
 			{
@@ -111,9 +170,15 @@
 				"Data_Type": "Int16",
 				"Register_Type": "Holding",
 
-				"Randwalk_Use": 1,
-				"Randwalk_Start": [0.0, 2.0],
-				"Randwalk_Factor": [5.0, 20.0]
+				"Components": [
+					{
+						"Name": "Randwalk",
+						"Params": {
+							"Start": [0.0, 2.0],
+							"Factor": [0.0, 20.0]
+						}
+					}
+				]
 			},
 						
 			{
@@ -122,9 +187,15 @@
 				"Data_Type": "Int16",
 				"Register_Type": "Holding",
 
-				"Randwalk_Use": 1,
-				"Randwalk_Start": [0.0, 2.0],
-				"Randwalk_Factor": [5.0, 20.0]
+				"Components": [
+					{
+						"Name": "Randwalk",
+						"Params": {
+							"Start": [0.0, 2.0],
+							"Factor": [0.0, 20.0]
+						}
+					}
+				]
 			},
 						
 			{
@@ -133,9 +204,15 @@
 				"Data_Type": "Int16",
 				"Register_Type": "Holding",
 
-				"Randwalk_Use": 1,
-				"Randwalk_Start": [0.0, 2.0],
-				"Randwalk_Factor": [5.0, 20.0]
+				"Components": [
+					{
+						"Name": "Randwalk",
+						"Params": {
+							"Start": [0.0, 2.0],
+							"Factor": [0.0, 20.0]
+						}
+					}
+				]
 			}
 		]
 	}

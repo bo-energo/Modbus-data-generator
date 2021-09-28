@@ -41,13 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Генерация данных\DataGenerator.cs" />
+    <Compile Include="Генераторы данных\DataGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Генерация данных\Generator.cs" />
-    <Compile Include="Генерация данных\Randwalk.cs" />
-    <Compile Include="Генерация данных\Sinewave.cs" />
-    <Compile Include="Генерация данных\Trend.cs" />
-    <Compile Include="Конвертация данных\TypeConverter.cs" />
+    <Compile Include="Генераторы данных\Generator.cs" />
+    <Compile Include="Генераторы данных\Randwalk.cs" />
+    <Compile Include="Генераторы данных\Sinewave.cs" />
+    <Compile Include="Генераторы данных\Trend.cs" />
+    <Compile Include="Генераторы чисел\SuperRandom.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

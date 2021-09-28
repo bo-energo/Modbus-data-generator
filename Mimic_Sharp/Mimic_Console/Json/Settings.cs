@@ -21,7 +21,7 @@ namespace Mimic_Console
         public byte Address { get; set; }
         public int[] Gen_Period { get; set; }
         public int[] Gen_End { get; set; }
-        public Generation_Settings[] Generate_Set { get; set; }
+        public Signals_Settings[] Signals_Set { get; set; }
     }
 
     public class RtuSlave_Settings
@@ -29,26 +29,21 @@ namespace Mimic_Console
 
     }
 
-    public class Generation_Settings
+    public class Signals_Settings
     {
         public string Name { get; set; }
         public int Address { get; set; }
         public string Data_Type { get; set; }
         public string Register_Type { get; set; }
 
-        public object Sinewave_Use { get; set; }
-        public object Sinewave_Count { get; set; }
-        public object Sinewave_Amplitude { get; set; }
-        public object Sinewave_Period { get; set; }
-        public object Sinewave_Phase { get; set; }
-
-        public object Randwalk_Use { get; set; }
-        public object Randwalk_Start { get; set; }
-        public object Randwalk_Factor { get; set; }
-
-        public object Trend_Use { get; set; }
-        public object Trend_Slope { get; set; }
-        public object Trend_Zero { get; set; }
-
+        public Component[] Components { get; set; }
     }
+
+    public class Component
+    {
+        public string Name { get; set; } = "";
+
+        public Dictionary<string, object> Params { get; set; }
+    }
+
 }

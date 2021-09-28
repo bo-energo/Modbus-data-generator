@@ -13,161 +13,230 @@ namespace Mimic_Console
 {
     class Program
     {
-        static Random rand;
-        static JsonConverter converter;
-
         // #################################################################################
 
         static void Main(string[] args)
         {
-            Settings settings = JsonControl.LoadSettings("Settings.json");
-            //DataGenerator generator = Create_Generator(settings.TcpSlave.Generate_Set[0], 1);
-            List<Signal> signals = new List<Signal>();
-            rand = new Random();
-            converter = new JsonConverter();
+            var settings = JsonControl.LoadSettings("Settings.json");
+            var converter = new JsonConverter();
+            var signals = new List<Signal>();
 
-            for (int i = 0; i < settings.TcpSlave.Generate_Set.Length; i++)
+            for (int i = 0; i < settings.TcpSlave.Signals_Set.Length; i++)
             {
-                var genset = settings.TcpSlave.Generate_Set[i];
-                DataGenerator generator = Create_Generator(genset, i+1);
+                var genset = settings.TcpSlave.Signals_Set[i];
+                DataGenerator generator = converter.CreateGenerator(genset.Components);
                 signals.Add(new Signal(genset, generator));
             }
 
+            DisplayInfo(settings, signals);
             Loop(settings, signals);
 
+            Console.ReadLine();
             //Application.Run(new Form1(generator));
         }
 
         static void Loop(Settings settings, List<Signal> signals)
         {
-            TcpSlave tcpSlave;
+            int exStage = 0;
 
             try
             {
-                tcpSlave = new TcpSlave(settings.TcpSlave.IP, settings.TcpSlave.Port, settings.TcpSlave.Address);
+                TcpSlave tcpSlave = new TcpSlave(settings.TcpSlave.IP, settings.TcpSlave.Port, settings.TcpSlave.Address);
                 tcpSlave.Start();
 
-                //AddLogMessage($"TCP-slave по адресу: {address}, порт {port} - Включён");
-            }
-            catch (Exception ex)
-            {
-                string message = $"Ошибка при подключении TCP-slave! {ex.Message}";
-                Console.WriteLine(message);
-                //AddLogMessage("ERROR! " + message);
-                return;
-            }
-
-            try
-            {
                 DateTime start_time = DateTime.Now;
                 int hour = settings.TcpSlave.Gen_Period[0];
                 int minute = settings.TcpSlave.Gen_Period[1];
                 int sec = settings.TcpSlave.Gen_Period[2];
                 TimeSpan period = new TimeSpan(hour, minute, sec);
 
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("\n\n   ");
-                for (int i = 0; i < 80; i++) Console.Write('#');
-                Console.Write("\n\t\t Начало записи...\n   ");
-                for (int i = 0; i < 80; i++) Console.Write('#');
-                Console.Write("\n\n");
-                Console.ForegroundColor = ConsoleColor.Green;
-
+                DisplayTitle("Начало записи");
+                exStage = 1;
 
                 while (true)
                 {
                     DateTime now_time = DateTime.Now;
-                    Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine($"\t ## [{now_time}] Запись:");
-                    Console.ForegroundColor = ConsoleColor.Green;
+
+                    Console.WriteLine();
+                    DisplayChapter($"{now_time}", ConsoleColor.DarkYellow);
+                    DisplayLine(ConsoleColor.DarkYellow);
 
                     foreach (var signal in signals)
                     {
                         var values = signal.Next();
 
-                        string mess = $"\t\t - {signal.name}: значение - [{signal.last}], записано - [";
+                        List<string> paramList = new List<string>();
+                        paramList.Add(signal.name);
+                        paramList.Add("Значение");
+                        paramList.Add(signal.last.ToString() + '\t');
+                        paramList.Add("Записано");
+
+                        string mess = $"[";
                         foreach (var item in values) mess += $"{item}, ";
                         mess = mess.Remove(mess.Length - 2) + "]";
-                        Console.WriteLine(mess);
+                        paramList.Add(mess);
+                        DisplayParam(paramList.ToArray());
 
                         tcpSlave.Write(signal.address, values, signal.register);
                     }
-
+                    
                     Thread.Sleep(period);
                 }
-
             }
             catch (Exception ex)
             {
-                string message = $"Ошибка при записи данных TCP-slave! {ex.Message}";
-                Console.WriteLine(message);
-                Console.ReadLine();
-                //AddLogMessage("ERROR! " + message);
+                string mess;
+                switch (exStage)
+                {
+                    case 1:
+                        mess = "Ошибка при записи данных! " + ex.Message;
+                        break;
+                    default:
+                        mess = "Ошибка при запуске TCP-slave! " + ex.Message;
+                        break;
+                }
+
+                Console.WriteLine(mess);
             }
         }
 
-        static DataGenerator Create_Generator(Generation_Settings settings, int num)
+        static void DisplayInfo(Settings settings, List<Signal> signals)
         {
-            DataGenerator generator = new DataGenerator();
+            DisplayLogo();
 
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("\n\n   ");
-            for (int i = 0; i < 80; i++) Console.Write('#');
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"\n\t Параметры генерации {num} сигнала:");
-            Console.WriteLine($"\t - Имя - {settings.Name}");
-            Console.WriteLine($"\t - Адрес - {settings.Address}");
-            Console.WriteLine($"\t - Тип данных - {settings.Data_Type}");
-            Console.WriteLine($"\t - Тип регистра - {settings.Register_Type}");
+            DisplayTitle("Параметры сервера");
+            DisplayParam("IP", settings.TcpSlave.IP);
+            DisplayParam("Port", settings.TcpSlave.Port);
+            var time = settings.TcpSlave.Gen_Period;
+            TimeSpan period = new TimeSpan(time[0], time[1], time[2]);
+            time = settings.TcpSlave.Gen_End;
+            TimeSpan timeEnd = new TimeSpan(time[0], time[1], time[2]);
+            DisplayParam("Период записи", period);
+            DisplayParam("Конец записи", timeEnd);
 
-            if (converter.ToBoolean(settings.Sinewave_Use))
+            DisplayTitle("Параметры сигналов");
+            for (int i = 0; i< signals.Count; i++)
             {
-                Console.Write("\t");
-                for (int i = 0; i < 70; i++) Console.Write('-');
-                Console.Write("\n ");
-                Console.WriteLine("\t Синусоиды:");
-                Console.WriteLine("\t\t [Амплитуда, Период, Фаза]:");
+                DisplayChapter($"Сигнал №{i+1}:", ConsoleColor.DarkYellow);
+                DisplayLine(ConsoleColor.DarkYellow);
+                DisplayParam("Имя сигнала", signals[i].name);
+                DisplayParam("Slave ID", signals[i].address);
+                DisplayParam("Тип данных", signals[i].dataType);
+                DisplayParam("Тип регистра", signals[i].register);
+                Console.WriteLine();
 
-                int count = converter.ToInt(settings.Sinewave_Count);
-                for (int i = 0; i < count; i++)
+                DisplayChapter("Компоненты Сигнала:", ConsoleColor.Yellow);
+                foreach (var generator in signals[i].generator.Generators)
                 {
-                    double amplitude = converter.ToDouble(settings.Sinewave_Amplitude);
-                    double period = converter.ToDouble(settings.Sinewave_Period);
-                    double phase = converter.ToDouble(settings.Sinewave_Phase);
-                    generator.generators.Add(new Sinewave(amplitude, period, phase));
-                    Console.WriteLine($"\t - {i+1} - [{amplitude}, {period}, {phase}]");
+                    DisplayParam(generator.GetParams());
                 }
+                DisplayLine(ConsoleColor.DarkYellow);
+                Console.WriteLine();
             }
+        }
 
-            if (converter.ToBoolean(settings.Randwalk_Use))
+        // #################################################################################
+
+        static void DisplayLogo()
+        {
+            int pad = 22;
+            Console.Write("\n\n");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("".PadLeft(pad) + "        ██  ██  ██  ██  ██      ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("██" + "\n\n");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("".PadLeft(pad) + "    ██  ██  ██  ██  ██      ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("██  ██  ██" + "\n\n");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("".PadLeft(pad) + "██  ██  ██  ██  ██      ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("██  ██  ██  ██  ██" + "\n\n");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("".PadLeft(pad) + "██  ██  ██  ██      ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("██  ██  ██  ██  ██  ██" + "\n\n");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("".PadLeft(pad) + "██  ██  ██                      ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("██  ██  ██" + "\n\n");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("".PadLeft(pad) + "██  ██  ██  ██  ██  ██      ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("██  ██  ██  ██" + "\n\n");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("".PadLeft(pad) + "██  ██  ██  ██  ██      ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("██  ██  ██  ██  ██" + "\n\n");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("".PadLeft(pad) + "    ██  ██  ██      ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("██  ██  ██  ██  ██" + "\n\n");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("".PadLeft(pad) + "        ██      ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("██  ██  ██  ██  ██" + "\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+            //Thread.Sleep(1000);
+        }
+
+        static void DisplayTitle(string name)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("\n   ");
+            Console.Write("".PadLeft(80, '▬'));
+            Console.Write("\n");
+            Console.ForegroundColor = ConsoleColor.Green;
+            int b = name.Length / 2;
+            Console.Write(name.PadLeft(43+b).PadRight(80+b));
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("\n   ");
+            Console.Write("".PadLeft(80, '▬'));
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("\n");
+        }
+
+        static void DisplayChapter(string name, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            int b = name.Length / 2;
+            Console.Write(name.PadLeft(43 + b).PadRight(80 + b) + "\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        static void DisplayLine(ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Write("".PadLeft(25).PadRight(60, '▬') + "\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        static void DisplayParam(string name, object value)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write($"{name}: ".PadLeft(30));
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"{value}\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        static void DisplayParam(string[] paramList)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write($"{paramList[0]}:".PadLeft(30));
+
+            for (int i = 1; i<paramList.Length-1; i+=2)
             {
-                Console.Write("\t");
-                for (int i = 0; i < 70; i++) Console.Write('-');
-                Console.WriteLine("\n\t Случайное блуждание:");
-
-                double start = converter.ToDouble(settings.Randwalk_Start);
-                double factor = converter.ToDouble(settings.Randwalk_Factor);
-                generator.generators.Add(new Randwalk(start, factor, rand.Next()));
-
-                Console.WriteLine($"\t - Start - {start}");
-                Console.WriteLine($"\t - Factor - {factor}");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write($" {paramList[i]}: ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"{paramList[i+1]}");
             }
 
-            if (converter.ToBoolean(settings.Trend_Use))
-            {
-                Console.Write("\t");
-                for (int i = 0; i < 70; i++) Console.Write('-');
-                Console.WriteLine("\n\t Тренд:");
-
-                double slope = converter.ToDouble(settings.Trend_Slope);
-                double zero = converter.ToDouble(settings.Trend_Zero);
-                generator.generators.Add(new Trend(slope, zero));
-
-                Console.WriteLine($"\t - Slope - {slope}");
-                Console.WriteLine($"\t - Zero - {zero}");
-            }
-
-            return generator;
+            Console.Write("\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
     }
 
@@ -182,7 +251,7 @@ namespace Mimic_Console
 
         // #################################################################################
 
-        public Signal(Generation_Settings settings, DataGenerator generator)
+        public Signal(Signals_Settings settings, DataGenerator generator)
         {
             name = settings.Name;
             address = settings.Address;

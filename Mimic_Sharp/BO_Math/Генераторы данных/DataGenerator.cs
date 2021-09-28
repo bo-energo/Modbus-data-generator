@@ -12,7 +12,10 @@ namespace BO_Math
     /// </summary>
     public class DataGenerator : Generator
     {
-        public List<Generator> generators = new List<Generator>();
+        /// <summary>
+        /// Список генераторов для обхода
+        /// </summary>
+        public List<Generator> Generators { get; set; } = new List<Generator>();
 
         // #################################################################################
 
@@ -24,7 +27,7 @@ namespace BO_Math
         {
             double value = 0;
 
-            foreach (var generator in generators)
+            foreach (var generator in Generators)
             {
                 value += generator.Next();
             }
@@ -32,5 +35,4 @@ namespace BO_Math
             return value;
         }
     }
-
 }
