@@ -2,7 +2,7 @@
 	"TcpSlave": {
 		"IP": "127.0.0.1",
 		"Port": 502,
-		"Address": 2,
+		"Slave_ID": 2,
 		"Gen_Period": [0, 0, 10],
 		"Gen_End": [2, 0, 40],
 		
