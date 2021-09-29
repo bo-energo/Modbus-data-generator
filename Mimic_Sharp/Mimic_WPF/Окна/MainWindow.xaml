@@ -76,27 +76,75 @@
                                 <RowDefinition Height="30"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Border BorderBrush="Black" BorderThickness="0,0,0,1" Grid.ColumnSpan="2">
+                            <Border BorderBrush="Black" BorderThickness="0,0,0,1">
                                 <Grid Background="#FFF6BFFF" Margin="0">
-                                    <Label Content="Параметры сервера:" RenderTransformOrigin="0.148,2.077" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                    <Label Content="Параметры генерации:" RenderTransformOrigin="0.148,2.077" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                                 </Grid>
                             </Border>
-                            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="241*"/>
+                                    <RowDefinition Height="68*"/>
+                                    <RowDefinition Height="178"/>
+                                </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <ListBox HorizontalAlignment="Left" Margin="10,31,0,222" Width="199"/>
+                                <ListBox HorizontalAlignment="Left" Margin="10,31,0,0" Width="199" Grid.RowSpan="2"/>
                                 <Label Content="Сигналы:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.148,2.077" Width="219" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="26"/>
                                 <Label Content="Компоненты сигнала:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.148,2.077" Width="219" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" Height="26"/>
-                                <ListBox HorizontalAlignment="Left" Margin="10,158,0,10" Width="199" Grid.Column="1"/>
-                                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Width="1" Grid.Column="1"/>
-                                <Label Content="Label" HorizontalAlignment="Left" Margin="16,51,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                                <TextBox HorizontalAlignment="Left" Height="26" Margin="70,51,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center" Grid.Column="1"/>
-                                <Button Content="+" HorizontalAlignment="Left" Margin="189,6,0,0" VerticalAlignment="Top" Width="20" FontWeight="Bold" FontFamily="Tahoma"/>
+                                <ListBox HorizontalAlignment="Left" Margin="10,31,0,0" Width="199" Grid.Column="1"/>
+                                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Width="1" Grid.Column="1" Grid.RowSpan="3"/>
+                                <Button Content="+" HorizontalAlignment="Left" Margin="189,8,0,0" VerticalAlignment="Top" Width="20" FontWeight="Bold" FontFamily="Tahoma" Height="18"/>
+                                <Button Content="+" HorizontalAlignment="Left" Margin="189,8,0,0" VerticalAlignment="Top" Width="20" FontWeight="Bold" FontFamily="Tahoma" Grid.Column="1" Height="18"/>
+                                <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="158" Margin="10,10,0,0" VerticalAlignment="Top" Width="199" Grid.Row="2" Background="White">
+                                    <Grid>
+                                        <Button Content="Сохранить" HorizontalAlignment="Left" Margin="114,128,0,0" VerticalAlignment="Top" Width="75"/>
+                                        <Label Content="Имя:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.211,0.462"/>
+                                        <TextBox HorizontalAlignment="Left" Height="26" Margin="61,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="126" VerticalContentAlignment="Center" RenderTransformOrigin="0.908,0.115"/>
+                                        <Label Content="Адрес:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.237,0.423"/>
+                                        <TextBox HorizontalAlignment="Left" Height="26" Margin="61,41,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="126" VerticalContentAlignment="Center" RenderTransformOrigin="0.908,0.115"/>
+                                        <ComboBox HorizontalAlignment="Left" Margin="92,72,0,0" VerticalAlignment="Top" Width="95" Height="26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" SelectedIndex="0">
+                                            <ListBoxItem Content="Int16"/>
+                                            <ListBoxItem Content="Int32"/>
+                                            <ListBoxItem Content="UInt16"/>
+                                            <ListBoxItem Content="Float16"/>
+                                            <ListBoxItem Content="Float32"/>
+                                        </ComboBox>
+                                        <Label Content="Тип данных:" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
+                                        <RadioButton Content="Holding" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" IsChecked="True"/>
+                                        <RadioButton Content="Input" HorizontalAlignment="Left" Margin="104,103,0,0" VerticalAlignment="Top"/>
+                                    </Grid>
+                                </Border>
+                                <Border BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Left" Height="226" Margin="10,10,0,0" VerticalAlignment="Top" Width="199" Grid.Row="1" Grid.Column="1" Background="White" Grid.RowSpan="2">
+                                    <Grid>
+                                        <Button Content="Сохранить" HorizontalAlignment="Left" Margin="114,196,0,0" VerticalAlignment="Top" Width="75"/>
+                                        <ComboBox HorizontalAlignment="Left" Margin="69,10,0,0" VerticalAlignment="Top" Width="120" Height="26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" SelectedIndex="0">
+                                            <ListBoxItem Content="Sinewave"/>
+                                            <ListBoxItem Content="Randwalk"/>
+                                            <ListBoxItem Content="Trend"/>
+                                        </ComboBox>
+                                        <Label Content="Тип" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                                        <Label Content="Use" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                                        <TextBox HorizontalAlignment="Left" Height="26" Margin="69,41,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center" RenderTransformOrigin="0.908,0.115"/>
+                                        <Label Content="Count" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
+                                        <TextBox HorizontalAlignment="Left" Height="26" Margin="69,72,0,0" TextWrapping="Wrap" Text="[10.0, 250.0]" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center" RenderTransformOrigin="0.908,0.115"/>
+                                        <Label Content="Label" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top"/>
+                                        <TextBox HorizontalAlignment="Left" Height="26" Margin="69,103,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center" RenderTransformOrigin="0.908,0.115"/>
+                                        <Label Content="Label" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top"/>
+                                        <TextBox HorizontalAlignment="Left" Height="26" Margin="69,134,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center" RenderTransformOrigin="0.908,0.115"/>
+                                        <Label Content="Label" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top"/>
+                                        <TextBox HorizontalAlignment="Left" Height="26" Margin="69,165,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center" RenderTransformOrigin="0.908,0.115"/>
+                                    </Grid>
+                                </Border>
                             </Grid>
                         </Grid>
                     </Border>
+                    <Label Content="Label" HorizontalAlignment="Left" Margin="32,351,0,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="2"/>
+                    <TextBox HorizontalAlignment="Left" Height="26" Margin="75,351,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center" RenderTransformOrigin="0.908,0.115" Grid.Row="1" Grid.Column="2"/>
+                    <ComboBox Grid.Column="2" HorizontalAlignment="Left" Margin="75,382,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" Height="26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <Label Content="Label" HorizontalAlignment="Left" Margin="32,382,0,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="2"/>
 
                 </Grid>
             </TabItem>
