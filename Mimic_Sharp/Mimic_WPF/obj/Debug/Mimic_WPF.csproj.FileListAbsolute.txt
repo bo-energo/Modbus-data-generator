@@ -1,0 +1,16 @@
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\bin\Debug\Mimic_WPF.exe.config
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\bin\Debug\Mimic_WPF.exe
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\bin\Debug\Mimic_WPF.pdb
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\Mimic_WPF\obj\Debug\Mimic_WPF.csprojAssemblyReference.cache
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\Mimic_WPF\obj\Debug\Окна\MainWindow.g.cs
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\Mimic_WPF\obj\Debug\App.g.cs
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\Mimic_WPF\obj\Debug\Mimic_WPF_MarkupCompile.cache
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\Mimic_WPF\obj\Debug\Mimic_WPF_MarkupCompile.lref
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\Mimic_WPF\obj\Debug\Окна\MainWindow.baml
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\Mimic_WPF\obj\Debug\Mimic_WPF.g.resources
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\Mimic_WPF\obj\Debug\Mimic_WPF.Properties.Resources.resources
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\Mimic_WPF\obj\Debug\Mimic_WPF.csproj.GenerateResource.cache
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\Mimic_WPF\obj\Debug\Mimic_WPF.csproj.CoreCompileInputs.cache
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\Mimic_WPF\obj\Debug\Mimic_WPF.csproj.CopyComplete
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\Mimic_WPF\obj\Debug\Mimic_WPF.exe
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\Mimic_WPF\obj\Debug\Mimic_WPF.pdb

@@ -10,7 +10,7 @@
 			{
 				"Name": "AT1_NKVV (0)",
 				"Address": 1,
-				"Data_Type": "Int16",
+				"Data_Type": "UInt16",
 				"Register_Type": "Holding",
 				
 				"Components": [
@@ -29,8 +29,8 @@
 						"Params": {
 							"Use": 1,
 							"Count": 1,
-							"Start": [0.0, 2.0],
-							"Factor": [0.0, 20.0]
+							"Start": -20,
+							"Factor": 20
 						}
 					},
 					{

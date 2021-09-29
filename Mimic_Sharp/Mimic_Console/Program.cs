@@ -281,27 +281,37 @@ namespace Mimic_Console
             double value = generator.Next();
             last = value;
 
-            switch (dataType)
+            switch (dataType.ToLower())
             {
-                case "Int16":
+                case "int16":
+                {
                     byte[] bites = BitConverter.GetBytes(Convert.ToInt16(value));
                     values.Add(BitConverter.ToUInt16(bites, 0));
                     last = Convert.ToInt16(value);
                     break;
-                case "Int32":
+                }
+                case "int32":
                 {
                     int[] buf = new int[] {Convert.ToInt32(value)};
                     values.AddRange(TypeConverter.I32_to_UI16(buf));
                     last = Convert.ToInt32(value);
                     break;
                 }
-                case "Float16":
+                case "uint16":
+                {
+                    uint buf = Convert.ToUInt16(Math.Max(0, value));
+                    byte[] bites = BitConverter.GetBytes(Convert.ToInt16(buf));
+                    values.Add(BitConverter.ToUInt16(bites, 0));
+                    last = Convert.ToInt32(value);
+                    break;
+                }
+                case "float16":
                 {
                     float[] buf = new float[] {Convert.ToSingle(value)};
                     values.AddRange(TypeConverter.F32_to_UI16(buf));
                     break;
                 }
-                case "Float32":
+                case "float32":
                 {
                     float[] buf = new float[] { Convert.ToSingle(value) };
                     values.AddRange(TypeConverter.F32_to_UI16(buf));

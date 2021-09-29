@@ -1,0 +1,8 @@
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Math\bin\Debug\BO_Math.dll
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Math\bin\Debug\BO_Math.pdb
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Math\obj\Debug\BO_Math.csprojAssemblyReference.cache
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Math\obj\Debug\BO_Math.csproj.CoreCompileInputs.cache
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Math\obj\Debug\BO_Math.dll
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Math\obj\Debug\BO_Math.pdb
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\bin\Debug\BO_Math.dll
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\bin\Debug\BO_Math.pdb

@@ -1,0 +1,13 @@
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Modbus\bin\Debug\BO_Modbus.dll.config
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Modbus\bin\Debug\BO_Modbus.dll
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Modbus\bin\Debug\BO_Modbus.pdb
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Modbus\bin\Debug\NModbus4.dll
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Modbus\bin\Debug\NModbus4.xml
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Modbus\obj\Debug\BO_Modbus.csprojAssemblyReference.cache
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Modbus\obj\Debug\BO_Modbus.csproj.CoreCompileInputs.cache
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Modbus\obj\Debug\BO_Modbus.csproj.CopyComplete
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Modbus\obj\Debug\BO_Modbus.dll
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\BO_Modbus\obj\Debug\BO_Modbus.pdb
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\bin\Debug\BO_Modbus.dll.config
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\bin\Debug\BO_Modbus.dll
+D:\Работа\Активные проекты\Modbus генератор\GIT\Mimic_Sharp\bin\Debug\BO_Modbus.pdb
