@@ -18,7 +18,7 @@ namespace Mimic_Console
     {
         public string IP { get; set; }
         public int Port { get; set; }
-        public byte Address { get; set; }
+        public byte Slave_ID { get; set; }
         public int[] Gen_Period { get; set; }
         public int[] Gen_End { get; set; }
         public Signals_Settings[] Signals_Set { get; set; }

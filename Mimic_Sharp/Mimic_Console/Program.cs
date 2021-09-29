@@ -41,7 +41,7 @@ namespace Mimic_Console
 
             try
             {
-                TcpSlave tcpSlave = new TcpSlave(settings.TcpSlave.IP, settings.TcpSlave.Port, settings.TcpSlave.Address);
+                TcpSlave tcpSlave = new TcpSlave(settings.TcpSlave.IP, settings.TcpSlave.Port, settings.TcpSlave.Slave_ID);
                 tcpSlave.Start();
 
                 DateTime start_time = DateTime.Now;
@@ -100,6 +100,13 @@ namespace Mimic_Console
             }
         }
 
+        // #################################################################################
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="signals"></param>
         static void DisplayInfo(Settings settings, List<Signal> signals)
         {
             DisplayLogo();
@@ -107,6 +114,7 @@ namespace Mimic_Console
             DisplayTitle("Параметры сервера");
             DisplayParam("IP", settings.TcpSlave.IP);
             DisplayParam("Port", settings.TcpSlave.Port);
+            DisplayParam("Slave ID", settings.TcpSlave.Slave_ID);
             var time = settings.TcpSlave.Gen_Period;
             TimeSpan period = new TimeSpan(time[0], time[1], time[2]);
             time = settings.TcpSlave.Gen_End;
@@ -115,12 +123,12 @@ namespace Mimic_Console
             DisplayParam("Конец записи", timeEnd);
 
             DisplayTitle("Параметры сигналов");
-            for (int i = 0; i< signals.Count; i++)
+            for (int i = 0; i < signals.Count; i++)
             {
-                DisplayChapter($"Сигнал №{i+1}:", ConsoleColor.DarkYellow);
+                DisplayChapter($"Сигнал №{i + 1}:", ConsoleColor.DarkYellow);
                 DisplayLine(ConsoleColor.DarkYellow);
                 DisplayParam("Имя сигнала", signals[i].name);
-                DisplayParam("Slave ID", signals[i].address);
+                DisplayParam("Адрес записи", signals[i].address);
                 DisplayParam("Тип данных", signals[i].dataType);
                 DisplayParam("Тип регистра", signals[i].register);
                 Console.WriteLine();
@@ -134,8 +142,6 @@ namespace Mimic_Console
                 Console.WriteLine();
             }
         }
-
-        // #################################################################################
 
         static void DisplayLogo()
         {
